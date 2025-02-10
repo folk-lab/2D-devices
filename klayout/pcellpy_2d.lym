@@ -180,16 +180,20 @@ class SET(pya.PCellDeclarationHelper):
     tl_extension = pya.DPolygon([
     pya.DPoint(left, top_tl),
     pya.DPoint(left, bottom_tl),
+    pya.DPoint(left - 1, bottom_tle),
     pya.DPoint(left - 2, bottom_tle),
-    pya.DPoint(left - 2, bottom_tle + 1) 
+    pya.DPoint(left - 2, bottom_tle + 1),
+    pya.DPoint(left - 1, bottom_tle + 0.5) 
     ])
 
     bl_extension = pya.DPolygon([
     pya.DPoint(left, top_bl),
     pya.DPoint(left, bottom_bl),
+    pya.DPoint(left - 1, top_ble - 0.5),
     pya.DPoint(left - 2, top_ble - 1),
-    pya.DPoint(left - 2, top_ble) 
-    ]) 
+    pya.DPoint(left - 2, top_ble),
+    pya.DPoint(left - 1, top_ble) 
+    ])
     
     ### course region (MMA) #######################################
     
