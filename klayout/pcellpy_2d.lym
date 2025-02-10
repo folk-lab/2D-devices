@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<klayout-macro>
+ <description/>
+ <version/>
+ <category>pymacros</category>
+ <prolog/>
+ <epilog/>
+ <doc/>
+ <autorun>true</autorun>
+ <autorun-early>false</autorun-early>
+ <priority>0</priority>
+ <shortcut/>
+ <show-in-menu>false</show-in-menu>
+ <group-name/>
+ <menu-path/>
+ <interpreter>python</interpreter>
+ <dsl-interpreter-name/>
+ <text>import pya
+import math
+
+"""
+This sample PCell implements a library called "MyLib" with a single PCell that
+draws a circle. It demonstrates the basic implementation techniques for a PCell 
+and how to use the "guiding shape" feature to implement a handle for the circle
+radius.
+
+NOTE: after changing the code, the macro needs to be rerun to install the new
+implementation. The macro is also set to "auto run" to install the PCell 
+when KLayout is run.
+"""
+
+class Circle(pya.PCellDeclarationHelper):
+  """
+  The PCell declaration for the circle
+  """
+
+  def __init__(self):
+
+    # Important: initialize the super class
+    super(Circle, self).__init__()
+
+    # declare the parameters
+    self.param("l", self.TypeLayer, "Layer")
+    self.param("l", self.TypeLayer, "Layer")
+    self.param("s", self.TypeShape, "", default = pya.DPoint(0, 0))
+    self.param("r", self.TypeDouble, "Radius", default = 0.1)
+    self.param("n", self.TypeInt, "Number of points", default = 64)     
+    # this hidden parameter is used to determine whether the radius has changed
+    # or the "s" handle has been moved
+    self.param("ru", self.TypeDouble, "Radius", default = 0.0, hidden = True)
+    self.param("rd", self.TypeDouble, "Double radius", readonly = True)
+
+  def display_text_impl(self):
+    # Provide a descriptive text for the cell
+    return "Circle(L=" + str(self.l) + ",R=" + ('%.3f' % self.r) + ")"
+  
+  def coerce_parameters_impl(self):
+  
+    # We employ coerce_parameters_impl to decide whether the handle or the 
+    # numeric parameter has changed (by comparing against the effective 
+    # radius ru) and set ru to the effective radius. We also update the 
+    # numerical value or the shape, depending on which on has not changed.
+    rs = None
+    if isinstance(self.s, pya.DPoint): 
+      # compute distance in micron
+      rs = self.s.distance(pya.DPoint(0, 0))
+    if rs != None and abs(self.r-self.ru) &lt; 1e-6:
+      self.ru = rs
+      self.r = rs 
+    else:
+      self.ru = self.r
+      self.s = pya.DPoint(-self.r, 0)
+    
+    self.rd = 2*self.r
+    
+    # n must be larger or equal than 4
+    if self.n &lt;= 4:
+      self.n = 4
+  
+  def can_create_from_shape_impl(self):
+    # Implement the "Create PCell from shape" protocol: we can use any shape which 
+    # has a finite bounding box
+    return self.shape.is_box() or self.shape.is_polygon() or self.shape.is_path()
+  
+  def parameters_from_shape_impl(self):
+    # Implement the "Create PCell from shape" protocol: we set r and l from the shape's 
+    # bounding box width and layer
+    self.r = self.shape.bbox().width() * self.layout.dbu / 2
+    self.l = self.layout.get_info(self.layer)
+  
+  def transformation_from_shape_impl(self):
+    # Implement the "Create PCell from shape" protocol: we use the center of the shape's
+    # bounding box to determine the transformation
+    return pya.Trans(self.shape.bbox().center())
+  
+  def produce_impl(self):
+  
+    # This is the main part of the implementation: create the layout
+
+    # compute the circle
+    da = math.pi * 2 / self.n
+    pts = [ pya.DPoint(self.ru * math.cos(i * da), self.ru * math.sin(i * da)) for i in range(0, self.n) ]
+    
+    # create the shape
+    self.cell.shapes(self.l_layer).insert(pya.DPolygon(pts))
+    
+
+class SET(pya.PCellDeclarationHelper):
+  """
+  The PCell declaration for a Single Electron Transistor (SET).
+  """
+
+  def __init__(self):
+
+    # Important: initialize the super class
+    super(SET, self).__init__()
+
+    # Declare the parameters
+    self.param("pl", self.TypeLayer, "PMMA Layer")  
+    self.param("ml", self.TypeLayer, "MMA Layer")   
+    self.param("island_w", self.TypeDouble, "Island width", default=0.1)
+    self.param("gap", self.TypeDouble, "Gap between leads and island", default=0.2)
+    self.param("symmetric", self.TypeBoolean, "evaporation symmetry", default=True)
+
+  def display_text_impl(self):
+    
+    return f"SET(Island={self.island_w} x {round(0.1/self.island_w,2)})"
+
+  def produce_impl(self):
+    # Get the layout and cell
+    ly = self.layout
+    cell = self.cell
+
+    # define parameters
+    island_w = self.island_w
+    island_h = 0.1/island_w
+    lead_w = 0.2 * island_h
+    lead_l = 0.5
+    gap = self.gap
+    symmetric = self.symmetric
+    
+
+    ### island ###
+    # define island positions
+    island_left = -island_w / 2
+    island_bottom = -island_h / 2
+    island_right = island_left + island_w
+    island_top = island_bottom + island_h
+    
+    # create shape # DBox Parameters: (double?) left, bottom, right, top
+    island = pya.DBox(island_left, island_bottom, island_right , island_top)
+    
+    # insert in PMMA Layer
+    #cell.shapes(self.pl_layer).insert(island)
+    
+    ### leads ###
+    # define the top lead positions and create shape
+    offset = 0.1 * island_h
+    right = island_left - gap
+    left = right - lead_l
+    top = island_top - offset
+    bottom = top - lead_w
+    top_lead = pya.DBox(left, bottom, right, top)
+    bottom_tl = bottom
+    top_tl = top
+    
+    # define the bottom lead positions and create shape
+    bottom = island_bottom + offset
+    top = bottom + lead_w
+    bottom_bl = bottom
+    top_bl = top
+    bottom_lead = pya.DBox(left, bottom, right, top)
+    
+    
+    # top/bottom lead extension
+    lead_space = bottom_tl - top_bl
+    bottom_tle = bottom_tl + (0.5 - lead_space/2)
+    top_ble = top_bl - (0.5 - lead_space/2)
+    
+    tl_extension = pya.DPolygon([
+    pya.DPoint(left, top_tl),
+    pya.DPoint(left, bottom_tl),
+    pya.DPoint(left - 2, bottom_tle),
+    pya.DPoint(left - 2, bottom_tle + 1) 
+    ])
+
+    bl_extension = pya.DPolygon([
+    pya.DPoint(left, top_bl),
+    pya.DPoint(left, bottom_bl),
+    pya.DPoint(left - 2, top_ble - 1),
+    pya.DPoint(left - 2, top_ble) 
+    ]) 
+    
+    ### course region (MMA) #######################################
+    
+    # define positions surrounding island and create shape
+    offset_x = 0.2
+    offset_y = 0.05
+    mma_left = island_left - offset_x if symmetric else island_left
+    mma_right = island_right + offset_x if symmetric else island_right + 2 * offset
+    mma_top = island_top + offset_y
+    mma_bottom = island_bottom - offset_y
+    mma_island = pya.DBox(mma_left, mma_bottom, mma_right, mma_top)
+    
+    # define positions surrounding bottom lead and create shape
+    mma_right = mma_left
+    mma_left = right - offset_y
+    mma_top = top + offset_y
+    mma_bottom = bottom - offset_y
+    mma_toplead = pya.DBox(mma_left, mma_bottom, mma_right, mma_top)
+    
+    # define positions surrounding top lead and create shape
+    top = island_top - offset
+    bottom = top - lead_w
+    mma_top = top + offset_y
+    mma_bottom = bottom - offset_y
+    mma_bottomlead = pya.DBox(mma_left, mma_bottom, mma_right, mma_top)
+    
+    ################################################################### 
+    
+    # Add everything to their corresponding layers    
+    cell.layout().clear_layer(self.ml_layer)
+    cell.layout().clear_layer(self.pl_layer)
+    cell.shapes(self.pl_layer).insert(island)
+    cell.shapes(self.pl_layer).insert(top_lead)
+    cell.shapes(self.pl_layer).insert(bottom_lead)
+    cell.shapes(self.pl_layer).insert(bl_extension)
+    cell.shapes(self.pl_layer).insert(tl_extension)
+    cell.shapes(self.ml_layer).insert(mma_island)
+    cell.shapes(self.ml_layer).insert(mma_toplead)
+    cell.shapes(self.ml_layer).insert(mma_bottomlead)
+
+class TwoDlib(pya.Library):
+  """
+  The library where we will put the PCell into 
+  """
+
+  def __init__(self):
+  
+    # Set the description
+    self.description = "2D fabrication library"
+    
+    # Create the PCell declarations
+    self.layout().register_pcell("Circle", Circle())
+    self.layout().register_pcell("SET", SET())
+    
+    # That would be the place to put in more PCells ...
+    
+    # Register us with the name "MyLib".
+    # If a library with that name already existed, it will be replaced then.
+    self.register("TwoDlib")
+
+
+# Instantiate and register the library
+TwoDlib()
+</text>
+</klayout-macro>
