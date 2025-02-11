@@ -118,13 +118,17 @@ class SET(pya.PCellDeclarationHelper):
     # Declare the parameters
     self.param("pl", self.TypeLayer, "PMMA Layer")  
     self.param("ml", self.TypeLayer, "MMA Layer")   
-    self.param("island_w", self.TypeDouble, "Island width", default=0.1)
+    self.param("island_w", self.TypeDouble, "Island width (um)", default=0.1)
+    self.param("lead_w", self.TypeDouble, "Lead width (um)", default=0)
     self.param("gap", self.TypeDouble, "Gap between leads and island", default=0.2)
     self.param("symmetric", self.TypeBoolean, "evaporation symmetry", default=True)
 
   def display_text_impl(self):
     
     return f"SET(Island={self.island_w} x {round(0.1/self.island_w,2)})"
+    
+  # def coerce_parameters_impl(self):
+  #  self.need_rebuild()
 
   def produce_impl(self):
     # Get the layout and cell
@@ -134,7 +138,7 @@ class SET(pya.PCellDeclarationHelper):
     # define parameters
     island_w = self.island_w
     island_h = 0.1/island_w
-    lead_w = 0.2 * island_h
+    lead_w = 0.2 * island_h if self.lead_w == 0 else self.lead_w
     lead_l = 0.5
     gap = self.gap
     symmetric = self.symmetric
