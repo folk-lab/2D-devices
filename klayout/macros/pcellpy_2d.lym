@@ -122,6 +122,14 @@ class SET(pya.PCellDeclarationHelper):
     self.param("lead_w", self.TypeDouble, "Lead width (um)", default=0)
     self.param("gap", self.TypeDouble, "Gap between leads and island", default=0.2)
     self.param("symmetric", self.TypeBoolean, "evaporation symmetry", default=True)
+    self.param("island_handle", self.TypeShape, "", default = pya.DPoint(0, 0))
+    
+    # this hidden parameter is used to determine whether the island_w has changed
+    # or the "s" handle has been moved
+    self.param("island_mem", self.TypeDouble, "Island_mem", default = 0.0, hidden = True)
+    #self.param("rd", self.TypeDouble, "Double radius", readonly = True)
+
+    
 
   def display_text_impl(self):
     
