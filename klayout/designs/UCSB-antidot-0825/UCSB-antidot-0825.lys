@@ -4,7 +4,7 @@
  <window-height>892</window-height>
  <window-state>AAAA/wAAAAD9AAAAAgAAAAAAAACxAAADJfwCAAAABPsAAAAqAG4AYQB2AGkAZwBhAHQAbwByAF8AZABvAGMAawBfAHcAaQBkAGcAZQB0AQAAADwAAADmAAAAkAD////7AAAAHABlAG8AXwBkAG8AYwBrAF8AdwBpAGQAZwBlAHQCAAADGAAAAewAAAGtAAAA7fsAAAAcAGgAcABfAGQAbwBjAGsAXwB3AGkAZABnAGUAdAEAAAEjAAACPgAAABYA////+wAAACAAbABpAGIAcwBfAGQAbwBjAGsAXwB3AGkAZABnAGUAdAIAAAAAAAAAAAAAALEAAAEAAAAAAQAAAOgAAAMl/AIAAAAD+wAAACoAYgBvAG8AawBtAGEAcgBrAHMAXwBkAG8AYwBrAF8AdwBpAGQAZwBlAHQAAAAAAP////8AAAAWAP////sAAAAcAGwAcABfAGQAbwBjAGsAXwB3AGkAZABnAGUAdAEAAAA8AAACogAAABYA////+wAAABwAbAB0AF8AZABvAGMAawBfAHcAaQBkAGcAZQB0AQAAAt8AAACCAAAAggAAAIIAAAT1AAADJQAAAAQAAAAEAAAACAAAAAj8AAAAAQAAAAIAAAABAAAADgB0AG8AbwBsAGIAYQByAQAAAAD/////AAAAAAAAAAA=</window-state>
  <window-geometry>AdnQywADAAAAAAWg///8lQAADC8AAAAsAAAFoP///LEAAAwvAAAALAAAAAECAAAABpAAAAWg///8sQAADC8AAAAs</window-geometry>
- <current-view>0</current-view>
+ <current-view>1</current-view>
  <layout>
   <name>UCSB-antidot-0825.GDS</name>
   <file-path>/Users/raveel/Documents/GitHub/2D-devices/klayout/designs/UCSB-antidot-0825/UCSB-antidot-0825.GDS</file-path>
@@ -564,10 +564,10 @@
   <title/>
   <active-cellview-index>0</active-cellview-index>
   <display>
-   <x-left>-24939.2172422</x-left>
-   <x-right>38483.3612756</x-right>
-   <y-bottom>-11994.8139041</y-bottom>
-   <y-top>26538.5257628</y-top>
+   <x-left>-423.944723097</x-left>
+   <x-right>6386.00279095</x-right>
+   <y-bottom>743.244862645</y-bottom>
+   <y-top>4880.73070451</y-top>
    <min-hier>0</min-hier>
    <max-hier>2</max-hier>
    <cellpaths>
