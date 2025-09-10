@@ -281,10 +281,10 @@
   <title/>
   <active-cellview-index>0</active-cellview-index>
   <display>
-   <x-left>-12918.1311668</x-left>
-   <x-right>9461.53907305</x-right>
-   <y-bottom>-10105.2411721</y-bottom>
-   <y-top>3491.86344168</y-top>
+   <x-left>-10714.7836788</x-left>
+   <x-right>10044.0872958</x-right>
+   <y-bottom>-11197.3579055</y-bottom>
+   <y-top>1415.00578354</y-top>
    <min-hier>0</min-hier>
    <max-hier>3</max-hier>
    <cellpaths>
@@ -409,7 +409,7 @@
      <dither-pattern>I5</dither-pattern>
      <line-style/>
      <valid>true</valid>
-     <visible>true</visible>
+     <visible>false</visible>
      <transparent>false</transparent>
      <width/>
      <marked>false</marked>
@@ -546,28 +546,16 @@
     <class>img::Object</class>
     <value>color:matrix=(0.0843874665919,0.00150307081045,-1997.92859888) (-0.00150307081045,0.0843874665919,-2003.28519928) (0,0,1);min_value=0;max_value=255;is_visible=true;z_position=-4;brightness=0;contrast=0;gamma=1;red_gain=1;green_gain=1;blue_gain=1;landmarks=[-432.468343986,-383.527464264,382.005498727,460.487356983];color_mapping=[0,'#000000';1,'#ffffff';];file='/Users/raveel/Documents/GitHub/2D-devices/klayout/designs/antidot-0825/3rd-quad-100x.png'</value>
    </annotation>
-   <annotation>
-    <class>img::Object</class>
-    <value>color:matrix=(0.00364008961761,0.0113122776567,-1997.22317839) (-0.0111160283782,0.00397907538242,-2017.41615141) (0,0,1);min_value=0;max_value=255;is_visible=true;z_position=-3;brightness=0;contrast=0;gamma=1;red_gain=1;green_gain=1;blue_gain=1;landmarks=[314.709433962,-490.04754717,-635.413333333,245.773081761,685.766842767,437.595974843];color_mapping=[0,'#000000';1,'#ffffff';];file='/Users/raveel/Documents/GitHub/2D-devices/klayout/designs/antidot-0825/3rd-quad-afm4.png'</value>
-   </annotation>
-   <annotation>
-    <class>img::Object</class>
-    <value>color:matrix=(0.00393187467232,0.0118477307166,-1996.77842135) (-0.0112894752297,0.00323322881753,-2007.59051562) (0,0,1);min_value=0;max_value=255;is_visible=true;z_position=1;brightness=0;contrast=0;gamma=1;red_gain=1;green_gain=1;blue_gain=1;landmarks=[141.801861635,-48.068427673,-663.344301887,118.248332075];color_mapping=[0,'#000000';1,'#ffffff';];file='/Users/raveel/Documents/GitHub/2D-devices/klayout/designs/antidot-0825/3rd-quad-afm3.png'</value>
-   </annotation>
-   <annotation>
-    <class>img::Object</class>
-    <value>color:matrix=(0.00384729430549,0.0113201929424,-1997.68106238) (-0.0113201929424,0.00384729430549,-1994.66483064) (0,0,1);min_value=0;max_value=255;is_visible=true;z_position=-1;brightness=0;contrast=0;gamma=1;red_gain=1;green_gain=1;blue_gain=1;landmarks=[-566.824660058,51.3272911652,394.351779774,-149.114431502];color_mapping=[0,'#000000';1,'#ffffff';];file='/Users/raveel/Documents/GitHub/2D-devices/klayout/designs/antidot-0825/3rd-quad-afm2.png'</value>
-   </annotation>
   </annotations>
  </view>
  <view>
   <title/>
   <active-cellview-index>0</active-cellview-index>
   <display>
-   <x-left>-423.944723097</x-left>
-   <x-right>6386.00279095</x-right>
-   <y-bottom>743.244862645</y-bottom>
-   <y-top>4880.73070451</y-top>
+   <x-left>2872.33994327</x-left>
+   <x-right>3146.84379445</x-right>
+   <y-bottom>2864.22812733</y-bottom>
+   <y-top>3031.00706292</y-top>
    <min-hier>0</min-hier>
    <max-hier>2</max-hier>
    <cellpaths>
